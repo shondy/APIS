@@ -41,22 +41,32 @@ def find_afterparties():
     sort = request.args.get('sort', '')
 
     url = 'https://app.ticketmaster.com/discovery/v2/events'
-    payload = {'apikey': API_KEY}
+    payload = {
+        'apikey': API_KEY,
+        'keyword': keyword,
+        'postalcode': postalcode,
+        'radius': radius,
+        'unit': unit,
+        'sort': sort
+        }
 
-    # TODO: Make a request to the Event Search endpoint to search for events
-    #
+    # Make a request to the Event Search endpoint to search for events  
     # - Use form data from the user to populate any search parameters
-    #
+
+    res = requests.get(url, params=payload)
+    
     # - Make sure to save the JSON data from the response to the `data`
     #   variable so that it can display on the page. This is useful for
     #   debugging purposes!
+
+    data = res.json()
+    # print(data)
+    
     #
     # - Replace the empty list in `events` with the list of events from your
     #   search results
 
-    data = {'Test': ['This is just some test data'],
-            'page': {'totalElements': 1}}
-    events = []
+    events = data["_embedded"]["events"]
 
     return render_template('search-results.html',
                            pformat=pformat,
@@ -68,14 +78,36 @@ def find_afterparties():
 # FURTHER STUDY
 # ===========================================================================
 
-
 @app.route('/event/<id>')
 def get_event_details(id):
     """View the details of an event."""
 
-    # TODO: Finish implementing this view function
+    # print("######################################", id)
+    url = f'https://app.ticketmaster.com/discovery/v2/events/{id}'
+    payload = {
+        'apikey': API_KEY
+        }
+    res = requests.get(url, params=payload)
+    data = res.json()
 
-    return render_template('event-details.html')
+    print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", list(data.keys()))
+    # https://www.w3.org/TR/WD-html40-970917/htmlweb.html#h-5.1.2
+    name = data['name']
+    description = data['description']
+    img_url = data['images']
+    
+    url = data["url"]
+
+    print(img_url, url)
+    
+
+    return render_template(
+        'event-details.html', 
+        name=name, 
+        description=description, 
+        img_url=img_url, 
+        url=url
+        )
 
 
 if __name__ == '__main__':

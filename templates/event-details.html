@@ -8,14 +8,14 @@
   <div class="row">
     <div class="col">
       {# TODO: Replace EVENT NAME with the event's name #}
-      <h2>EVENT NAME</h2>
+      <h2>{{ name }}</h2>
 
       {#
         TODO: Replace THIS PAGE IS FOR FURTHER STUDY with
         event's description
       #}
       <p>
-        THIS PAGE IS FOR FURTHER STUDY.
+        {{ description }}
       </p>
     </div>
   </div>
@@ -26,14 +26,14 @@
         TODO: Replace EVENT IMAGE URL with actual URL to one of the
         event images
       #}
-      <img src="EVENT IMAGE URL">
+      <img src="/static/img/balloonicorn.png">
 
       <p>
         {#
           TODO: Replace EVENT TICKETMASTER URL with URL to event's
           Ticketmaster page
         #}
-        <a href="EVENT TICKETMASTER URL" target="_blank">
+        <a href="{{ url }}" target="_blank">
           Go to Ticketmaster page
         </a>
       </p>
